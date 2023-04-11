@@ -2,6 +2,9 @@ package org.example.recomusic;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @Data
 public class Vertex {
     private String trackId;
@@ -14,10 +17,9 @@ public class Vertex {
     private float acousticness;
     private float instrumentalness;
     private float valence;
-    private float tempo;
-    private EdgeList<Vertex> edges;
+    private EdgeList edges;
 
-    public Vertex(int limit, String trackId, String artists, String albumName, String trackName, float danceability, float energy, float speechiness, float acousticness, float instrumentalness, float valence, float tempo) {
+    public Vertex(int limit, String trackId, String artists, String albumName, String trackName, float danceability, float energy, float speechiness, float acousticness, float instrumentalness, float valence) {
         this.trackId = trackId;
         this.artists = artists;
         this.albumName = albumName;
@@ -28,15 +30,16 @@ public class Vertex {
         this.acousticness = acousticness;
         this.instrumentalness = instrumentalness;
         this.valence = valence;
-        this.tempo = tempo;
-        this.edges = new EdgeList<>(limit, new EdgeCreator(this));
+        this.edges = new EdgeList(limit, new EdgeCreator(new ArrayList<>(Arrays.asList(this))));
     }
 
-    public int calculateWeight(Vertex vertex) {
-        return 0;
+    public double calculateWeight(Vertex vertex, long noOfArtists, long noOfAlbums) {
+        int sameArtists = artists.equals(vertex.artists) ? 1 : 0;
+        int sameAlbum = albumName.equals(vertex.albumName) ? 1 : 0;
+        return noOfArtists * sameArtists + noOfAlbums * sameAlbum + danceability + energy + speechiness + acousticness + instrumentalness + valence;
     }
 
     public void connectVertex(Vertex vertex) {
-        edges.add(vertex);
+        edges.add(vertex, 1, 1);
     }
 }

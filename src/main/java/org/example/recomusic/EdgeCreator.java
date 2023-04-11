@@ -2,18 +2,20 @@ package org.example.recomusic;
 
 import lombok.Data;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.lang.Math;
 
 @Data
-public class EdgeCreator implements Comparator<Vertex> {
-    private Vertex vertex;
+public class EdgeCreator {
+    private ArrayList<Vertex> vertices;
 
-    public EdgeCreator(Vertex vertex) {
-        this.vertex = vertex;
+    public EdgeCreator(ArrayList<Vertex> vertices) {
+        this.vertices = vertices;
     }
 
-    @Override
-    public int compare(Vertex vertex1, Vertex vertex2) {
-        return vertex1.calculateWeight(vertex) - vertex2.calculateWeight(vertex);
+    public double compare(Vertex vertex1, Vertex vertex2, long noOfArtists, long noOfAlbums) {
+        double average1 = vertices.stream().mapToDouble((vertex) -> vertex1.calculateWeight(vertex, noOfArtists, noOfAlbums)).average().getAsDouble();
+        double average2 = vertices.stream().mapToDouble((vertex) -> vertex2.calculateWeight(vertex, noOfArtists, noOfAlbums)).average().getAsDouble();
+        return average1 - average2;
     }
 }
