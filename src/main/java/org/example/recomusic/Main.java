@@ -44,9 +44,9 @@ public class Main {
         String path = "/home/lucas/Documents/BCC/3-periodo/aed2/Recomusic/dataset.csv";
         try {
             List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
-            for (Vertex vertex : vertices) {
-                vertex.setEdges(new EdgeList(10, new EdgeCreator(new ArrayList<>(Arrays.asList(vertex)))));
-                graph.add(vertex);
+            for (int i = 0; i < 1000; i++) {
+                vertices.get(i).setEdges(new EdgeList(10, new EdgeCreator(new ArrayList<>(Arrays.asList(vertices.get(i))))));
+                graph.add(vertices.get(i));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
