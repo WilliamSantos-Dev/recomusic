@@ -49,8 +49,16 @@ public class Vertex {
     }
 
     public double calculateWeight(Vertex vertex, long noOfArtists, long noOfAlbums) {
-//        int weights[]
-        return 0;
+        int sameArtists = this.artists == vertex.artists ? 1 : 0;
+        int sameAlbums = this.albumName == vertex.albumName ? 1 : 0;
+        return ((float) noOfArtists / (1 + sameArtists) +
+                (float) noOfAlbums / (1 + sameAlbums) +
+                (float) 1 / (1 + Math.pow(danceability - vertex.danceability, 2)) +
+                (float) 1 / (1 + Math.pow(energy - vertex.energy, 2)) +
+                (float) 1 / (1 + Math.pow(speechiness - vertex.speechiness, 2)) +
+                (float) 1 / (1 + Math.pow(acousticness - vertex.acousticness, 2)) +
+                (float) 1 / (1 + Math.pow(instrumentalness - vertex.instrumentalness, 2)) +
+                (float) 1 / (1 + Math.pow(valence - vertex.valence, 2))) / (noOfArtists + noOfAlbums + 6) ;
     }
 
     public void connectVertex(Vertex vertex) {
