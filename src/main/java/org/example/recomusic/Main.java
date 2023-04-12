@@ -6,9 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
         Graph graph = new Graph();
-
-        Screen s = new Screen();
-
-        s.showWindow(graph);
+        graph = graph.loadGraph("graph.recomusic");
+        System.out.println(graph.getVertices().size());
+        Screen s = new Screen(graph);
     }
 }

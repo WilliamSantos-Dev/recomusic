@@ -8,11 +8,14 @@ import java.util.ArrayList;
 public class Screen extends JFrame {
 
     private final ArrayList<Vertex> sample;
-    private final Vertex music;
+    private Vertex music;
     private final JTextField field;
+
+    private Graph graph;
 
     public Screen (Graph graph) {
         super();
+        this.graph = graph;
         sample = new ArrayList<Vertex>();
         music = new Vertex();
         field = new JTextField();
@@ -57,8 +60,13 @@ public class Screen extends JFrame {
                         String trackID = field.getText();
 
                         music = graph.searchMusic(trackID);
+                        if(music != null) {
+                            System.out.println("TrackName: " + music.getTrackName() + " Artista: " + music.getArtists());
+                            sample.add(music);
+                        }
+                        else{ System.out.println("Musica não encontrada");}
 
-                        sample.add(music);
+
 
                     }
                 });

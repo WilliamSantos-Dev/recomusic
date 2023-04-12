@@ -12,7 +12,7 @@ import java.util.List;
 public class Graph implements Serializable {
     private ArrayList<Vertex> vertices;
     private static final long serialVersionUID = 57246925417L;
-
+    //Esse ID garante que o grafo salvo e carregado seja sempre o mesmo, evita erros.
     public Graph() {
         vertices = new ArrayList<>();
     }
@@ -71,7 +71,7 @@ public class Graph implements Serializable {
         int contador = 0;
         try {
             List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
-            for (int i = 0; i < numVertex; i++) {
+            for (int i = 0; i < numVertices; i++) {
                 vertices.get(i).setEdges(new EdgeList(limitEdges, new EdgeCreator(new ArrayList<>(Arrays.asList(vertices.get(i))))));
                 graph.add(vertices.get(i));
                 //apagar dps
@@ -102,5 +102,14 @@ public class Graph implements Serializable {
             throw new RuntimeException(e);
         }
         return graph;
+    }
+
+    public  Vertex searchMusic(String id){
+        for(Vertex m : this.vertices){
+            if(id.equals(m.getTrackId())) {
+                return m;
+            }
+        }
+        return null;
     }
 }
