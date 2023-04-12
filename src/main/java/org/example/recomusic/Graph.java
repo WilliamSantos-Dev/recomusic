@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 public class Graph implements Serializable {
     private ArrayList<Vertex> vertices;
+    private static final long serialVersionUID = 57246925417L;
 
     public Graph() {
         vertices = new ArrayList<>();
@@ -64,14 +65,38 @@ public class Graph implements Serializable {
         return graph;
     }
 
+    public Graph createGraph(String path, int numVertices, int limitEdges){
 
-    public Graph createGraph(String path, int numVertex, int limitEdges){
         Graph graph = new Graph();
+        int contador = 0;
         try {
             List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
             for (int i = 0; i < numVertex; i++) {
                 vertices.get(i).setEdges(new EdgeList(limitEdges, new EdgeCreator(new ArrayList<>(Arrays.asList(vertices.get(i))))));
                 graph.add(vertices.get(i));
+                //apagar dps
+                if(contador%100 == 0)
+                    System.out.println(contador);
+                contador++;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return graph;
+    }
+
+    //Função auxiliar para carregar um intervalo de músicas específico, caso já tenha adicionado uma parte e deseje continuar de onde parou.
+    public Graph addGraphInterval(Graph graph, String path, int limitEdges, int initInterval, int endInterval){
+        int contador = 0;
+        try {
+            List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
+            for (int i = initInterval; i < endInterval; i++) {
+                vertices.get(i).setEdges(new EdgeList(limitEdges, new EdgeCreator(new ArrayList<>(Arrays.asList(vertices.get(i))))));
+                graph.add(vertices.get(i));
+                //apagar dps
+                if(contador%100 == 0)
+                    System.out.println(contador);
+                contador++;
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
