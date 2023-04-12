@@ -46,7 +46,7 @@ public class Vertex implements Serializable {
         this.acousticness = acousticness;
         this.instrumentalness = instrumentalness;
         this.valence = valence;
-        this.edges = new EdgeList(limit, new EdgeCreator(new ArrayList<>(Arrays.asList(this))));
+        this.edges = new EdgeList(limit, new ArrayList<>(Arrays.asList(this)));
     }
 
     public double calculateWeight(Vertex vertex, long noOfArtists, long noOfAlbums) {

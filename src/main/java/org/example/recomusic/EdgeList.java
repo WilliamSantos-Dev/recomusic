@@ -8,20 +8,25 @@ import java.util.*;
 @Data
 public class EdgeList implements Serializable {
     private int limit;
-    private ArrayList<Vertex> items;
-    private EdgeCreator edgeCreator;
+    private ArrayList<Edge> edges;
+    private ArrayList<Vertex> vertices;
 
-    public EdgeList(int limit, EdgeCreator comparator) {
+    public EdgeList(int limit, ArrayList<Vertex> vertices) {
         this.limit = limit;
-        this.edgeCreator = comparator;
-        this.items = new ArrayList<>();
+        this.edges = new ArrayList<>();
+        this.vertices = vertices;
     }
 
-    public void add(Vertex item, long noOfArtists, long noOfAlbums) {
+    public double calculateAverageWeight(Vertex vertex, long noOfArtists, long noOfAlbums) {
+        return vertices.stream().mapToDouble((e) -> vertex.calculateWeight(e, noOfArtists, noOfAlbums)).average().getAsDouble();
+    }
+
+    public void add(Vertex vertex, long noOfArtists, long noOfAlbums) {
         int i = 0;
-        for (; i < items.size() && edgeCreator.compare(item, items.get(i), noOfArtists, noOfAlbums) < 0; i++);
-        items.add(i, item);
-        if (items.size() > limit)
-            items.remove(limit);
+        Edge edge = new Edge(vertex, calculateAverageWeight(vertex, noOfArtists, noOfAlbums));
+        for (; i < edges.size() && edges.get(i).getWeight() > edge.getWeight(); i++);
+        edges.add(i, edge);
+        if (edges.size() > limit)
+            edges.remove(limit);
     }
 }

@@ -25,7 +25,7 @@ public class Graph implements Serializable {
     }
 
     public EdgeList recommend(ArrayList<Vertex> sample, int size) {
-        EdgeList result = new EdgeList(size, new EdgeCreator(sample));
+        EdgeList result = new EdgeList(size, sample);
         long noOfArtists = vertices.stream()
                 .mapToLong(
                         (e) -> vertices.stream().filter(
@@ -40,7 +40,7 @@ public class Graph implements Serializable {
                         ).count()
                 ).max()
                 .getAsLong();
-        sample.stream().forEach((music) -> music.getEdges().getItems().stream().forEach((edge) -> result.add(edge, noOfArtists, noOfAlbums)));
+        sample.stream().forEach((music) -> music.getEdges().getEdges().stream().forEach((edge) -> result.add(edge.getVertex(), noOfArtists, noOfAlbums)));
         return result;
     }
 
@@ -72,7 +72,7 @@ public class Graph implements Serializable {
         try {
             List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
             for (int i = 0; i < numVertices; i++) {
-                vertices.get(i).setEdges(new EdgeList(limitEdges, new EdgeCreator(new ArrayList<>(Arrays.asList(vertices.get(i))))));
+                vertices.get(i).setEdges(new EdgeList(limitEdges, new ArrayList<>(Arrays.asList(vertices.get(i)))));
                 graph.add(vertices.get(i));
                 //apagar dps
                 if(contador%100 == 0)
@@ -91,7 +91,7 @@ public class Graph implements Serializable {
         try {
             List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
             for (int i = initInterval; i < endInterval; i++) {
-                vertices.get(i).setEdges(new EdgeList(limitEdges, new EdgeCreator(new ArrayList<>(Arrays.asList(vertices.get(i))))));
+                vertices.get(i).setEdges(new EdgeList(limitEdges, new ArrayList<>(Arrays.asList(vertices.get(i)))));
                 graph.add(vertices.get(i));
                 //apagar dps
                 if(contador%100 == 0)
