@@ -19,16 +19,17 @@ public class Main {
 
     public static void main(String[] args) {
         Graph graph = new Graph();
-
+        ArrayList<Vertex> sample = new ArrayList<>();
         //Alguns testes
-        System.out.println(graph.getVertices().size());
-        graph = graph.createGraph("dataset.csv", 1000, 10);
-        System.out.println(graph.getVertices().size());
-        graph.saveGraph("graph.recomusic", graph);
+        //System.out.println(graph.getVertices().size());
+        //graph = graph.createGraph("dataset.csv", 30000, 10);
+        //System.out.println("Grafo criado!");
+        //System.out.println(graph.getVertices().size());
+        //graph.saveGraph("graph.recomusic", graph);
         graph = graph.loadGraph("graph.recomusic");
-        for(int i =0; i < 1000;i++) {
-            System.out.println(graph.getVertices().get(i).getTrackName());
-        }
         System.out.println(graph.getVertices().size());
+        //graph = graph.addGraphInterval(graph,"dataset.csv", 10,30000,50000);
+        //graph.saveGraph("graph.recomusic", graph);
+        //System.out.println(graph.getVertices().size());
     }
 }
