@@ -3,11 +3,12 @@ package org.example.recomusic;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @Data
-public class Vertex {
+public class Vertex implements Serializable {
     @CsvBindByName(column = "track_id")
     private String trackId;
     @CsvBindByName

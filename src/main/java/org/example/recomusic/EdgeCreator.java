@@ -2,11 +2,12 @@ package org.example.recomusic;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.lang.Math;
 
 @Data
-public class EdgeCreator {
+public class EdgeCreator implements Serializable {
     private ArrayList<Vertex> vertices;
 
     public EdgeCreator(ArrayList<Vertex> vertices) {
