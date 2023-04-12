@@ -1,6 +1,8 @@
 module Recomusic {
     requires static lombok;
-    requires com.opencsv;
+
     requires java.sql;
+    requires opencsv;
+    requires java.desktop;
     exports org.example.recomusic;
 }
