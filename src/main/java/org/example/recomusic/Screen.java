@@ -1,15 +1,19 @@
 package org.example.recomusic;
 
+import lombok.Data;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+@Data
 public class Screen extends JFrame {
 
-    private final ArrayList<Vertex> sample;
+    private  ArrayList<Vertex> sample;
     private Vertex music;
     private final JTextField field;
+    JList lst;
 
     private Graph graph;
 
@@ -60,14 +64,41 @@ public class Screen extends JFrame {
                         String trackID = field.getText();
 
                         music = graph.searchMusic(trackID);
+
+
+
                         if(music != null) {
-                            System.out.println("TrackName: " + music.getTrackName() + " Artista: " + music.getArtists());
-                            sample.add(music);
+                            JOptionPane.showMessageDialog(null,
+                                  "Nome do Artista: " + music.getArtists() +
+                                  "\nNome da Música: " + music.getTrackName());
+
+
                         }
-                        else{ System.out.println("Musica não encontrada");}
+                        else{
+                            JOptionPane.showMessageDialog(null, "Impossível encontrar música, tente " +
+                                    "com outro ID");
+                        }
 
 
 
+                    }
+                });
+
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String trackID = field.getText();
+
+                        music = graph.searchMusic(trackID);
+
+                        if(music != null) {
+                           sample.add(music);
+                           JOptionPane.showMessageDialog(null, "Música adicionada à playlist");
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Impossível encontrar música, tente " +
+                                    "com outro ID");
+                        }
                     }
                 });
 
@@ -78,9 +109,34 @@ public class Screen extends JFrame {
                 frame.add(search);
                 frame.add(field);
                 frame.add(button);
+
             }
         });
 
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame();
+
+                DefaultListModel<String> lista = new DefaultListModel<>();
+                for (Vertex v : sample) {
+                    lista.addElement(v.getTrackName());
+                }
+
+                lst = new JList<>(lista);
+
+                JScrollPane jp = new JScrollPane();
+
+                jp.setViewportView(lst);
+                jp.setBounds(100, 100, 200, 200);
+
+                frame.add(lst);
+                System.out.println(sample.get(0).getTrackName());
+                frame.setVisible(true);
+                frame.setLayout(null);
+                frame.setSize(500, 500);
+            }
+        });
 
 
         frame1.add(button1);
@@ -89,6 +145,11 @@ public class Screen extends JFrame {
         frame1.add(button4);
         frame1.add(button5);
     }
+
+    public JList getList () {
+        return lst;
+    }
+
 
 
 
