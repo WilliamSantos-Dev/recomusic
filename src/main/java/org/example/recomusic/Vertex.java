@@ -1,5 +1,6 @@
 package org.example.recomusic;
 
+import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -7,17 +8,31 @@ import java.util.Arrays;
 
 @Data
 public class Vertex {
+    @CsvBindByName(column = "track_id")
     private String trackId;
+    @CsvBindByName
     private String artists;
+    @CsvBindByName(column = "album_name")
     private String albumName;
+    @CsvBindByName(column = "track_name")
     private String trackName;
+    @CsvBindByName
     private float danceability;
+    @CsvBindByName
     private float energy;
+    @CsvBindByName
     private float speechiness;
+    @CsvBindByName
     private float acousticness;
+    @CsvBindByName
     private float instrumentalness;
+    @CsvBindByName
     private float valence;
     private EdgeList edges;
+
+    public Vertex() {
+
+    };
 
     public Vertex(int limit, String trackId, String artists, String albumName, String trackName, float danceability, float energy, float speechiness, float acousticness, float instrumentalness, float valence) {
         this.trackId = trackId;
@@ -34,9 +49,8 @@ public class Vertex {
     }
 
     public double calculateWeight(Vertex vertex, long noOfArtists, long noOfAlbums) {
-        int sameArtists = artists.equals(vertex.artists) ? 1 : 0;
-        int sameAlbum = albumName.equals(vertex.albumName) ? 1 : 0;
-        return noOfArtists * sameArtists + noOfAlbums * sameAlbum + danceability + energy + speechiness + acousticness + instrumentalness + valence;
+//        int weights[]
+        return 0;
     }
 
     public void connectVertex(Vertex vertex) {

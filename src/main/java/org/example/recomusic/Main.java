@@ -1,10 +1,20 @@
 package org.example.recomusic;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderHeaderAware;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.exceptions.CsvException;
+import com.opencsv.exceptions.CsvValidationException;
 import lombok.Data;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Data
 public class Main {
@@ -31,25 +41,15 @@ public class Main {
     }
     public static void main(String[] args) {
         Graph graph = new Graph();
-        String path = "/home/william/Documentos/recomusic/database.csv";
-        int limit = 10;
-        int contador = 0;
-        try(BufferedReader br = new BufferedReader(new FileReader(path))){
-            String line = br.readLine();
-            line = br.readLine();
-            while (line != null){
-                String [] music = line.split(",");
-                if(music.length == 10) //evita que linhas com virgulas a mais causem erro
-                    graph.add(createMusic(music, limit));
-                line = br.readLine();
-                if(contador%1000 == 0)
-                    System.out.println(contador);
-                contador++;
+        String path = "/home/lucas/Documents/BCC/3-periodo/aed2/Recomusic/dataset.csv";
+        try {
+            List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
+            for (Vertex vertex : vertices) {
+                vertex.setEdges(new EdgeList(10, new EdgeCreator(new ArrayList<>(Arrays.asList(vertex)))));
+                graph.add(vertex);
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
-        System.out.println(contador + "Músicas inseridas");
-        System.out.println(graph.getVertices().size());
     }
 }
