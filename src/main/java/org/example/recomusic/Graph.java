@@ -66,11 +66,12 @@ public class Graph implements Serializable {
     }
 
     public Graph createGraph(String path, int numVertices, int limitEdges){
+
         Graph graph = new Graph();
         int contador = 0;
         try {
             List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
-            for (int i = 0; i < numVertices; i++) {
+            for (int i = 0; i < numVertex; i++) {
                 vertices.get(i).setEdges(new EdgeList(limitEdges, new EdgeCreator(new ArrayList<>(Arrays.asList(vertices.get(i))))));
                 graph.add(vertices.get(i));
                 //apagar dps
