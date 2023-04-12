@@ -2,8 +2,10 @@ package org.example.recomusic;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Edge {
+public class Edge implements Serializable {
     private Vertex vertex;
     private double weight;
 

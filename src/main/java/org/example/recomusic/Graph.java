@@ -24,36 +24,36 @@ public class Graph implements Serializable {
         vertices.add(vertex);
     }
 
-    public EdgeList recommend(ArrayList<Vertex> sample, int size) {
+    public List<Vertex> recommend(ArrayList<Vertex> sample, int size) {
         EdgeList result = new EdgeList(size, sample);
-        long noOfArtists = vertices.stream()
+        long noOfArtists = sample.stream()
                 .mapToLong(
-                        (e) -> vertices.stream().filter(
+                        (e) -> sample.stream().filter(
                                 (ee) -> ee.getArtists().equals(e.getArtists())
                         ).count()
                 ).max()
                 .getAsLong();
-        long noOfAlbums = vertices.stream()
+        long noOfAlbums = sample.stream()
                 .mapToLong(
-                        (e) -> vertices.stream().filter(
+                        (e) -> sample.stream().filter(
                                 (ee) -> ee.getAlbumName().equals(e.getAlbumName())
                         ).count()
                 ).max()
                 .getAsLong();
         sample.stream().forEach((music) -> music.getEdges().getEdges().stream().forEach((edge) -> result.add(edge.getVertex(), noOfArtists, noOfAlbums)));
-        return result;
+        return result.getEdges().stream().map((e) -> e.getVertex()).toList();
     }
 
-    public void saveGraph(String path, Graph graph){
+    public void saveGraph(String path){
         try{
             FileOutputStream file = new FileOutputStream(path);
             ObjectOutputStream object = new ObjectOutputStream(file);
-            object.writeObject(graph);
+            object.writeObject(this);
             object.flush();
             System.out.println("Grafo salvo com sucesso!");
         }catch (Exception erro){ System.out.println("Não foi possivel salvar o grafo. ERRO: " + erro.getMessage() );}
     }
-    public Graph loadGraph(String path){
+    public static Graph loadGraph(String path) throws IOException {
         Graph graph = new Graph();
         try{
             FileInputStream file = new FileInputStream(path);
@@ -61,11 +61,13 @@ public class Graph implements Serializable {
             graph = (Graph) object.readObject();
             System.out.println("Grapho carregado com sucesso");
 
-        }catch (Exception erro){ System.out.println("Não foi possivel carregar o Grafo. ERRO: " +erro.getMessage());}
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         return graph;
     }
 
-    public Graph createGraph(String path, int numVertices, int limitEdges){
+     public static Graph createGraph(String path, int numVertices, int limitEdges){
 
         Graph graph = new Graph();
         int contador = 0;

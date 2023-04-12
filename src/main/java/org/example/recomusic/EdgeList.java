@@ -25,7 +25,8 @@ public class EdgeList implements Serializable {
         int i = 0;
         Edge edge = new Edge(vertex, calculateAverageWeight(vertex, noOfArtists, noOfAlbums));
         for (; i < edges.size() && edges.get(i).getWeight() > edge.getWeight(); i++);
-        edges.add(i, edge);
+        if (edges.size() > i && !edges.get(i).getVertex().getTrackId().equals(vertex.getTrackId()) || edges.size() == i)
+            edges.add(i, edge);
         if (edges.size() > limit)
             edges.remove(limit);
     }
