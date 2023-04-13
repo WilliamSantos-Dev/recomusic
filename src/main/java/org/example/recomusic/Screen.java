@@ -228,7 +228,7 @@ public class Screen extends javax.swing.JFrame {
                 }
                 else{JOptionPane.showMessageDialog(null, "Impossível encontrar música, tente " + "com outro ID");}
                 try{
-                    list2.add(" Nome " + sample.get(list2.getItemCount()).getTrackName() + " - " + sample.get(list2.getItemCount()).getArtists());
+                    list2.add("Música: " + sample.get(list2.getItemCount()).getTrackName() + " - Artista: " + sample.get(list2.getItemCount()).getArtists());
                 }catch(Exception erro){
                     System.out.println(erro.getMessage());
                 }
