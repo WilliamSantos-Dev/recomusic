@@ -17,8 +17,7 @@ public class Screen extends javax.swing.JFrame {
         this.field = new JTextField();
         initComponents(graph);
     }
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+
     public void initComponents(Graph graph) {
 
         jMenu1 = new javax.swing.JMenu();

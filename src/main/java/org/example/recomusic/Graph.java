@@ -4,9 +4,11 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.Data;
 
 import java.io.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.time.Duration;
 
 @Data
 public class Graph implements Serializable {
@@ -59,7 +61,7 @@ public class Graph implements Serializable {
             FileInputStream file = new FileInputStream(path);
             ObjectInputStream object = new ObjectInputStream(file);
             graph = (Graph) object.readObject();
-            System.out.println("Grapho carregado com sucesso");
+            System.out.println("Grafo carregado com sucesso");
 
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -70,21 +72,34 @@ public class Graph implements Serializable {
      public static Graph createGraph(String path, int numVertices, int limitEdges){
 
         Graph graph = new Graph();
-        int contador = 0;
+        //int contador = 0;
+         // Instant inicioGeral = Instant.now();
+         //Instant inicioParcial = Instant.now();
         try {
             List<Vertex> vertices = new CsvToBeanBuilder(new FileReader(path)).withType(Vertex.class).build().parse();
             for (int i = 0; i < numVertices; i++) {
                 vertices.get(i).setEdges(new EdgeList(limitEdges, new ArrayList<>(Arrays.asList(vertices.get(i)))));
                 graph.add(vertices.get(i));
-                //apagar dps
-                if(contador%100 == 0)
-                    System.out.println(contador);
+                /*
+                if (contador % 1000 == 0) {
+                    Instant fimParcial = Instant.now();
+                    Duration duracaoParcial = Duration.between(inicioParcial, fimParcial); // Calcula a duração parcial
+                    long duracaoParcialMillis = duracaoParcial.toMillis();
+                    System.out.println((contador - 1000) + " - " + contador + " Tempo: " + duracaoParcialMillis + " ms");
+                    inicioParcial = Instant.now();
+                }
                 contador++;
+                 */
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return graph;
+        /*
+        Instant fimGeral = Instant.now();
+         Duration duracaoGeral = Duration.between(inicioGeral, fimGeral);
+         long duracaoGeralMillis = duracaoGeral.toMillis();
+         System.out.println("Tempo total: " + duracaoGeralMillis + " ms");*/
+         return graph;
     }
 
     //Função auxiliar para carregar um intervalo de músicas específico, caso já tenha adicionado uma parte e deseje continuar de onde parou.
@@ -95,8 +110,7 @@ public class Graph implements Serializable {
             for (int i = initInterval; i < endInterval; i++) {
                 vertices.get(i).setEdges(new EdgeList(limitEdges, new ArrayList<>(Arrays.asList(vertices.get(i)))));
                 graph.add(vertices.get(i));
-                //apagar dps
-                if(contador%100 == 0)
+                if(contador%1000 == 0)
                     System.out.println(contador);
                 contador++;
             }
